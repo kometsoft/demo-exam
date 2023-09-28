@@ -18,3 +18,6 @@ Route::get('/', function () {
 });
 
 Route::resource('/complaint', \App\Http\Controllers\ComplaintController::class);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
