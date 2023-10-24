@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreApplicationRequest;
 use App\Http\Requests\UpdateApplicationRequest;
 use App\Models\Application;
+use Illuminate\Support\Facades\Auth;
 
 class ApplicationController extends Controller
 {
@@ -13,7 +14,9 @@ class ApplicationController extends Controller
      */
     public function index()
     {
-        //
+        return view('applications.index', [
+            'applications' => Application::all()
+        ]);
     }
 
     /**
@@ -21,7 +24,35 @@ class ApplicationController extends Controller
      */
     public function create()
     {
-        //
+        $options = [
+            [
+                'id' => 1,
+                'name' => 'Pilihan 1'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Pilihan 2'
+            ]
+        ];
+
+        $options = collect([
+            (object)[
+                'id' => 1,
+                'name' => 'Pilihan 1'
+            ],
+            (object)[
+                'id' => 2,
+                'name' => 'Pilihan 2'
+            ]
+        ]);
+
+        $newVariable = 1;
+
+        return view('applications.edit', [
+            'application' => new Application(),
+            'options' => $options,
+            'newVariable' => $newVariable
+        ]);
     }
 
     /**
@@ -29,7 +60,15 @@ class ApplicationController extends Controller
      */
     public function store(StoreApplicationRequest $request)
     {
-        //
+        dd($request->all());
+
+        Application::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'is_enabled' => $request->input('is_enabled'),
+        ]);
+
+        return to_route('application.index')->with('success', 'Record created successfully');
     }
 
     /**
@@ -45,7 +84,9 @@ class ApplicationController extends Controller
      */
     public function edit(Application $application)
     {
-        //
+        return view('applications.edit', [
+            'application' => $application
+        ]);
     }
 
     /**
