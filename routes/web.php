@@ -17,9 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/exam/{exam}/import-mark', [\App\Http\Controllers\ExamController::class, 'importMark'])->name('exam.import-mark');
+Route::get('/exam/{exam}/edit-mark', [\App\Http\Controllers\ExamController::class, 'editMark'])->name('exam.edit-mark');
+Route::post('/exam/{exam}/update-mark', [\App\Http\Controllers\ExamController::class, 'updateMark'])->name('exam.update-mark');
+
 Route::resource('/complaint', \App\Http\Controllers\ComplaintController::class);
 Route::resource('/application', \App\Http\Controllers\ApplicationController::class);
-
+Route::resource('/exam', \App\Http\Controllers\ExamController::class);
 
 Auth::routes();
 

@@ -2,12 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Exam;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Exam>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExamUser>
  */
-class ExamFactory extends Factory
+class ExamUserFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +19,9 @@ class ExamFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => fake()->sentence(),
+            'exam_id' => Exam::pluck('id')->random(),
+            'user_id' => User::pluck('id')->random(),
+            'mark' => rand(0, 100),
             'created_at' => now(),
             'updated_at' => now()
         ];

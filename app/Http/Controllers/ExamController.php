@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreExamRequest;
 use App\Http\Requests\UpdateExamRequest;
 use App\Models\Exam;
+use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
@@ -13,7 +14,9 @@ class ExamController extends Controller
      */
     public function index()
     {
-        //
+        return view('exam.index', [
+            'exams' => Exam::all()
+        ]);
     }
 
     /**
@@ -62,5 +65,32 @@ class ExamController extends Controller
     public function destroy(Exam $exam)
     {
         //
+    }
+
+    public function editMark(Exam $exam)
+    {
+        return view('exam.mark.edit', [
+            'exam' => $exam->load('users'),
+        ]);
+
+        // return view('exam.mark.edit', compact('exam'));
+    }
+
+    public function updateMark(Request $request, Exam $exam)
+    {
+        $request->validate([
+            'marks.*.mark' => ['required', 'integer', 'max:100', 'min:0']
+        ]);
+
+        $exam->users()->sync($request->input('marks'));
+
+        return back()->with('success', 'Markah berjaya dikemaskini.');
+    }
+
+    public function importMark(Exam $exam)
+    {
+        return view('exam.mark.import', [
+            'exam' => $exam
+        ]);
     }
 }
